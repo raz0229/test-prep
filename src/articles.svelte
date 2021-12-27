@@ -8,7 +8,7 @@
 	export let temp_articles;
 
 	const filterDomain = (e, inp) => {
-		if (e.code == "Backspace") articles = temp_articles;
+		if (e.keyCode == 8) articles = temp_articles;
 		articles = articles.filter((x) => {
 			return x.domain.trim().includes(inp.trim());
 		});

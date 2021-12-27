@@ -31,7 +31,7 @@
 	  if (!(apiInp.trim().length == 0)) {
 		apiMatched = true;
   
-		await fetch("https://api-spykeys.herokuapp.com/", { //http://localhost:8081
+		await fetch("https://api-spykeys.herokuapp.com/", { //
 		  method: "GET",
 		  mode: "cors",
 		  cache: "no-cache",
