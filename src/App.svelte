@@ -69,6 +69,8 @@
 		});
 	  }
 	};
+	
+	console.log('What ya gonna do? 👀')
   </script>
   
   <div class="material-page">
