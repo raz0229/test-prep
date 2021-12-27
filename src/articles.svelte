@@ -10,7 +10,7 @@
 	const filterDomain = (e, inp) => {
 		if (e.keyCode == 8) articles = temp_articles;
 		articles = articles.filter((x) => {
-			return x.domain.trim().includes(inp.trim());
+			return x.domain.trim().includes(inp.trim().toLowerCase());
 		});
 	};
 </script>
