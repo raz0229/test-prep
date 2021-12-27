@@ -4,9 +4,8 @@
 	const key = urlParams.get("apiKey");
   
 	let articles;
-	let x = 585;
 	let apiMatched = false,
-	  apiInp = key;
+	apiInp = key;
 	export let contentLength = 10;
 	let temp_articles;
   
@@ -20,7 +19,7 @@
 	});
   
 	const loadMore = (elem) => {
-	  if (elem.scrollTop >= elem.scrollHeight - x) {
+	  if (elem.scrollTop >= elem.scrollHeight - elem.clientHeight) {
 		contentLength += 10;
 	  }
 	};
@@ -32,7 +31,7 @@
 	  if (!(apiInp.trim().length == 0)) {
 		apiMatched = true;
   
-		await fetch("https://api-spykeys.herokuapp.com/", {
+		await fetch("http://localhost:8081", { //https://api-spykeys.herokuapp.com/
 		  method: "GET",
 		  mode: "cors",
 		  cache: "no-cache",
