@@ -1,90 +1,143 @@
 <script>
-	import Articles from "./articles.svelte";
-	const urlParams = new URLSearchParams(window.location.search);
-	const key = urlParams.get("apiKey");
-  
+	
 	let articles;
-	let apiMatched = false,
-	apiInp = key;
-	export let contentLength = 10;
-	let temp_articles;
+	let apiInp = '';
   
 	document.addEventListener("DOMContentLoaded", function () {
+	  
+	  articles = links
 	  var elems = document.querySelectorAll(".tooltipped");
 	  var elems2 = document.querySelectorAll(".fixed-action-btn");
-	  var instances = M.Tooltip.init(elems);
-	  var instances = M.FloatingActionButton.init(elems2);
+	  var elems3 = document.querySelectorAll(".dropdown-trigger");
+	  var elems4 = document.querySelectorAll('.modal');
+
+	  M.Tooltip.init(elems);
+	  M.FloatingActionButton.init(elems2);
+	  M.Dropdown.init(elems3);
+	  M.Modal.init(elems4);
   
-	  if (key) document.querySelector(".search-bar").style.background = "#fdf8a3";
 	});
   
-	const loadMore = (elem) => {
-	  if (elem.scrollTop >= elem.scrollHeight - elem.clientHeight) {
-		contentLength += 10;
-	  }
-	};
-  
-	const handleSearch = async () => {
+	const handleSearch = (term) => {
+	  articles = links
+	  var elems5 = document.querySelectorAll('.collapsible');
+	  M.Collapsible.init(elems5);
 	  document.querySelector(".search-btn").classList.remove("pulse");
 	  document.querySelector(".search-bar").style.background = "#fff";
+
+	  articles = articles.filter( obj => obj.title.toLowerCase().includes(term.toLowerCase()))
+	  
   
-	  if (!(apiInp.trim().length == 0)) {
-		apiMatched = true;
-  
-		await fetch("https://api-spykeys.herokuapp.com/", { //
-		  method: "GET",
-		  mode: "cors",
-		  cache: "no-cache",
-		  credentials: "same-origin",
-		  headers: {
-			"x-api-key": `${apiInp.trim()}`,
-		  },
-		}).then((res) => {
-		  if (!(res.status == 403)) {
-			res.json().then((data) => {
-			  if (data.logs) {
-				articles = data.logs;
-				temp_articles = articles;
-			  } else
-				articles = [
-				  {
-					domain: "NO_DATA",
-					text: "This collection is currently inactive",
-					timestamp: `${new Date()
-					  .getTime()
-					  .toString()
-					  .substring(0, 10)}`,
-				  },
-				];
-			});
-		  } else {
-			articles = [
-			  {
-				domain: "403 (FORBIDDEN)",
-				text: "Invalid API Key entered.",
-				timestamp: `${new Date().getTime().toString().substring(0, 10)}`,
-			  },
-			];
-		  }
-		});
-	  }
 	};
 	
 	console.log('What ya gonna do? 👀')
   </script>
   
   <div class="material-page">
-	<nav class="indigo lighten-1" role="navigation">
-	  <div class="nav-wrapper container">
-		<a
-		  id="logo-container"
-		  href="https://spykeys.herokuapp.com"
-		  class="brand-logo"
-		  ><i class="material-icons" style="font-size: larger;">visibility</i> Spy
-		  Keys</a
-		>
-	  </div>
-	</nav>
+
+
+	<!-- More Dropdown-->
+<ul id="dropdown1" class="dropdown-content">
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('nust') }" data-target="modal1">NUST</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('nums') }" data-target="modal1">NUMS</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('star') }" data-target="modal1">STARS</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('kna') }" data-target="modal1">KNACK</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('grip') }" data-target="modal1">GRIP</a></li>
+	<li class="divider"></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('ecat') }" data-target="modal1">ECAT</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('mdcat') }" data-target="modal1">MDCAT</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('reas') }" data-target="modal1">Reasoning</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('tip') }" data-target="modal1">Tips Tricks</a></li>
+  </ul>
+
+    <!-- Boards Dropdown-->
+<ul id="dropdown2" class="dropdown-content">
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('punj') }" data-target="modal1">Punjab</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('sind') }" data-target="modal1">Sindh</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('kpk') }" data-target="modal1">KPK</a></li>
+	<li class="divider"></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('fede') }" data-target="modal1">Federal</a></li>
+  </ul>
+
+  <!-- Subjects Dropdown-->
+<ul id="dropdown3" class="dropdown-content">
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('math') }" data-target="modal1">Math</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('bio') }" data-target="modal1">Biology</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('chem') }" data-target="modal1">Chemistry</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('eng') }" data-target="modal1">English</a></li>
+	<li><a href="#!" class="indigo-text text-darken-2 modal-trigger" on:click="{ () => handleSearch('phy') }" data-target="modal1">Physics</a></li>
+  </ul>
+
+   <!-- Modal Structure -->
+   <div id="modal1" class="modal">
+    <div class="modal-content">
+	{#if articles}
+      <h5 style="margin-bottom: 2rem">{ articles.length } Matching Resources: </h5>
+      
+	  <ul class="collapsible">
+		{#each articles as link}
+		<li>
+		  <div class="collapsible-header"><i class="material-icons">format_list_bulleted</i>{ link.title }</div>
+		  <div class="collapsible-body" style="text-align: center"><a class="indigo-text" href="{ link.link }">Open Link</a></div>
+		</li>
+		{/each }
+	  </ul>
+	  {:else}
+	  <h5 class="red-text">Something is wrong</h5>
+	  {/if}
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div>
+
+
+	<nav class="nav-extended indigo lighten-1">
+		<div class="nav-wrapper container">
+			<a
+			id="logo-container"
+			href="/"
+			class="brand-logo"
+			><i class="material-icons" style="font-size: larger;">local_library</i>Test Prep</a
+		  >
+		<ul id="nav-mobile" class="right hide-on-med-and-down">
+			<li><a href="#request">Request</a></li>
+			<li><a href="#about">About</a></li>
+			<li><a href="#about">Contact</a></li>
+		  </ul>
+		</div>
+		<div class="nav-content">
+		  <ul class="tabs blue-text">
+			<li class="tab indigo lighten-5 modal-trigger" on:click="{ () => handleSearch('') }" data-target="modal1" ><a class="indigo-text text-darken-2" href="#test1">All</a></li>
+			<li class="tab modal-trigger" on:click="{ () => handleSearch('step') }" data-target="modal1"><a class="indigo-text text-darken-2" href="#test1">Step</a></li>
+			<li class="tab modal-trigger" on:click="{ () => handleSearch('kips') }" data-target="modal1"><a class="indigo-text text-darken-2" href="#test1">KIPS</a></li>
+			<li class="tab modal-trigger" on:click="{ () => handleSearch('pmc') }" data-target="modal1"><a class="indigo-text text-darken-2" href="#test1">PMC Tests</a></li>
+			<li class="tab modal-trigger" on:click="{ () => handleSearch('question') }" data-target="modal1"><a class="indigo-text text-darken-2" href="#test1">Quest Bank</a></li>
+			<li class="tab modal-trigger" on:click="{ () => handleSearch('past') }" data-target="modal1"><a class="indigo-text text-darken-2" href="#test1">Past Papers</a></li>
+			<li class="tab"><a class="indigo-text text-darken-2 dropdown-trigger" href="#!" data-target="dropdown3">Subjects<i class="material-icons right">arrow_drop_down</i></a></li>
+			<li class="tab"><a class="indigo-text text-darken-2 dropdown-trigger" href="#!" data-target="dropdown2">Boards<i class="material-icons right">arrow_drop_down</i></a></li>
+			<li class="tab indigo lighten-5"><a class="indigo-text text-darken-2 dropdown-trigger" href="#!" data-target="dropdown1">More<i class="material-icons right">arrow_drop_down</i></a></li>
+		  </ul>
+		</div>
+	  </nav>
+	
+	  <ul class="sidenav" id="mobile-demo">
+		<li><a href="sass.html">Sass</a></li>
+		<li><a href="badges.html">Components</a></li>
+		<li><a href="collapsible.html">JavaScript</a></li>
+	  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
 	<div class="section no-pad-bot" id="index-banner">
 	  <div class="container">
 		<br /><br />
@@ -106,7 +159,7 @@
 			<div
 			  class="search-bar tooltipped"
 			  data-position="bottom"
-			  data-tooltip="Your secret API key can be copied from SpyKeys chrome extension"
+			  data-tooltip="Search for any book if you cant find it"
 			>
 			  <input
 				type="text"
@@ -114,11 +167,12 @@
 				placeholder="&nbsp;"
 				bind:value={apiInp}
 			  />
-			  <span class="label">Your API Key</span>
+			  <span class="label">Search Books</span>
 			  <span class="highlight" />
 			  <div
-				class="btn-large pulse waves-effect waves-light search-btn"
-				on:click={handleSearch}
+				class="btn-large pulse waves-effect waves-light search-btn modal-trigger"
+				data-target="modal1"
+				on:click={() => handleSearch(apiInp.trim())}
 			  >
 				<svg class="icon icon-18">
 				  <use xlink:href="#magnify" />
@@ -128,59 +182,93 @@
 		  </h5>
 		</div>
   
-		<div class="divider">OR</div>
-  
-		<div class="row center">
-		  <a
-			href="http://tinyurl.com/INSTALL-SPYKEYS-CHROME-EXTENSION"
-			id="download-button"
-			class="btn-large black secondary-button">Generate New</a
-		  >
+		<div class="divid">OR</div>
+		
+		<div class="col s12">
+			<div clas="row" style="text-align: center">
+				<svg style="width: 10%" class="svg-inline--fa fa-paper-plane" aria-hidden="true" focusable="false" data-prefix="far" data-icon="paper-plane" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M440 6.5L24 246.4c-34.4 19.9-31.1 70.8 5.7 85.9L144 379.6V464c0 46.4 59.2 65.5 86.6 28.6l43.8-59.1 111.9 46.2c5.9 2.4 12.1 3.6 18.3 3.6 8.2 0 16.3-2.1 23.6-6.2 12.8-7.2 21.6-20 23.9-34.5l59.4-387.2c6.1-40.1-36.9-68.8-71.5-48.9zM192 464v-64.6l36.6 15.1L192 464zm212.6-28.7l-153.8-63.5L391 169.5c10.7-15.5-9.5-33.5-23.7-21.2L155.8 332.6 48 288 464 48l-59.4 387.3z"></path></svg>
+			</div>
 		</div>
+
+		<div class="col s12" id="request">
+			<div class="row center grey-text darken-3" style="margin-top: 3rem">
+				<h3>Request a Resource!</h3>
+			</div>
+		</div>
+		
+		<form class = "kwes-form col s12" action="https://formspree.io/f/xnqwdnpq" method="POST">  
+            <div class = "row">  
+               <div class = "input-field col s6">  
+                  <i class = "material-icons prefix">account_circle</i>  
+                  <input placeholder = "Type here" name = "fname" id = "fname"  
+                     type = "text" class = "active validate" required />  
+                  <label for = "fname">First Name</label>  
+               </div>  
+                 
+               <div class = "input-field col s6">        
+                  <label for = "lname">Last Name</label>  
+                  <input id = "lname" name = "lname" type = "text" placeholder = "Type here"  
+                     class = "validate" required />            
+               </div>  
+            </div>  
+              
+            <div class = "row">  
+               <div class = "input-field col s12">  
+				<i class = "material-icons prefix">mail</i>  
+                  <input placeholder = "Email" id = "email" type = "email" name = "email" 
+                     class = "validate">  
+                  <label for = "email">Email</label>  
+               </div>  
+            </div>  
+              
+ 
+            <div class = "row">  
+               <div class = "input-field col s12">  
+				<i class = "material-icons prefix">mode_edit</i>  
+                  <input placeholder = "Your message here..." class = "materialize-textarea" id = "message" name = "message" 
+                     type = "text" required />  
+                  <label for = "message">Message</label>  
+				    
+               </div>  
+            </div>  
+
+			<div class = "row center">  
+				<button class="btn btn-large waves-effect waves-light indigo lighten-1" type="submit" name="action" style="width: 100%; font-family: 'Quicksand', sans-serif">Send Request
+					<i class="material-icons right">send</i>
+				  </button>
+			 </div>  
+              
+        </form>         
+
+
 		<br /><br />
 	  </div>
 	</div>
   
-	{#if apiMatched}
-	  <div
-		class="container center fetch-container"
-		on:scroll={() => loadMore(document.querySelector(".fetch-container"))}
-	  >
-		<div class="section">
-		  <!--   Icon Section   -->
-		  <div class="col striped">
-			<main>
-			  <Articles {articles} {contentLength} {temp_articles} />
-			</main>
-		  </div>
-		</div>
-		<br /><br />
-	  </div>
-	{/if}
-  
 	<footer class="page-footer black">
-	  <div class="container">
+	  <div class="container" id="about">
 		<div class="row">
 		  <div class="col l6 s12">
 			<h5 class="white-text heading">
 			  <span class="material-icons"> help </span><span>
-				About SpyKeys</span
+				About TestPrep</span
 			  >
 			</h5>
 			<p class="grey-text text-lighten-4">
-			  SpyKeys is a chrome extension and a real-time keylogger that logs
-			  alpha-numeric and symbol keys and saves them in a remote database
-			  with your auto-generated API Key so it can be accessed anywhere by
-			  SpyKeys web app. Users have full access to their data and may delete
-			  it entirely at anytime they want
+			  TestPrep is a simple single-page web app made using MaterializeCSS and the Svelte framework
+			  to help students find the right resources in the quickest time possible. Hundreds of paid papers
+			  are available for free to download and more are being added as per your requests.
 			</p>
 		  </div>
 		  <div class="col l3 s12">
 			<h5 class="white-text heading">
 			  <span><span class="material-icons"> face </span> About Me</span>
 			</h5>
+			<div class="motayyab">
+				<img src="assets/motayyab.jpg" alt="">
+			</div>
 			<p class="grey-text text-lighten-4">
-			  I am a Full-stack developer and Ethical hacker. I code for fun.
+			  I am Motayyab Jabbar, tech-enthusiast and hobbyist. Studying, not yet working. (COMSATS)
 			</p>
 		  </div>
 		  <div class="col l3 s12">
@@ -189,31 +277,21 @@
 			</h5>
 			<ul>
 			  <li>
-				<a class="white-text" href="https://instagram.com/raz0229"
+				<a class="white-text" href="https://www.instagram.com/m.o.t.a.y.y.a.b/"
 				  >Instagram</a
 				>
 			  </li>
 			  <li>
-				<a class="white-text" href="https://twitter.com/raz0229"
-				  >Twitter</a
-				>
-			  </li>
-			  <li>
-				<a class="white-text" href="https://goo.gl/CZuiMY">YouTube</a>
-			  </li>
-			  <li>
-				<a class="white-text" href="https://facebook.com/raz0229"
+				<a class="white-text" href="https://www.facebook.com/100027849882311/"
 				  >Facebook</a
 				>
 			  </li>
 			  <li>
-				<a class="white-text" href="https://reddit.com/u/raz0229"
-				  >Reddit</a
+				<a class="white-text" href="mailto:motayyab341@gmail.com"
+				  >Email</a
 				>
 			  </li>
-			  <li>
-				<a class="white-text" href="https://github.com/raz0229">GitHub</a>
-			  </li>
+
 			</ul>
 		  </div>
 		</div>
@@ -359,7 +437,27 @@
 	  background-color: #f7f7f7;
 	  font-family: "Quicksand", sans-serif;
 	}
-  
+	.motayyab {
+		text-align: center;
+	}
+
+	.motayyab > img {
+		width: 175px;
+		border-radius: 50%;
+	}
+
+	.tabs {
+		position: unset !important;
+	}
+
+	.dropdown-content {
+		top: 49px !important;
+	}
+
+	form {
+		font-family: 'Quicksand', sans-serif;
+	}
+
 	.mysvg {
 	  width: 60%;
 	  margin-top: 8px;
@@ -450,7 +548,7 @@
 	  display: inline-flex;
 	}
 	.header img {
-	  width: 350px;
+	  width: 250px;
 	  height: 65%;
 	}
 	.icon-18 {
@@ -479,7 +577,7 @@
 	Line Divider
 	*/
   
-	.divider {
+	.divid {
 	  overflow: visible !important;
 	  display: flex;
 	  margin-bottom: 2rem;
@@ -492,36 +590,22 @@
   
 	@media screen and (max-width: 699px) {
 	  .header img {
-		width: 250px;
+		width: 150px;
 	  }
 	}
 	@media screen and (max-width: 389px) {
 	  nav .brand-logo {
-		left: 43% !important;
+		left: 32% !important;
+	  }
+	}
+	@media screen and (max-width: 992px) {
+	  nav .brand-logo {
+		left: 40% !important;
+	  }
+	  .tabs .tab a {
+		  display: flex !important;
 	  }
 	}
   
-	/*
-  Scroll bar
-  */
-	/* width */
-	::-webkit-scrollbar {
-	  width: 10px;
-	}
-  
-	/* Track */
-	::-webkit-scrollbar-track {
-	  background: #f1f1f1;
-	}
-  
-	/* Handle */
-	::-webkit-scrollbar-thumb {
-	  background: #8790c3;
-	}
-  
-	/* Handle on hover */
-	::-webkit-scrollbar-thumb:hover {
-	  background: #3d4364;
-	}
   </style>
   
